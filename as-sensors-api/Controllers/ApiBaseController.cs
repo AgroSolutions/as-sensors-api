@@ -1,8 +1,8 @@
-﻿using AS.Sensors.API.Wrappers;
+﻿using as_sensors_api.Wrapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace AS.Sensors.API.Controllers
+namespace as_sensors_api.Controllers
 {
     [ApiController]
     public abstract class ApiBaseController : ControllerBase

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>as_sensors_application</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\as-sensors-domain\as-sensors-domain.csproj" />
+    <ProjectReference Include="..\as-sensors-infra\as-sensors-infra.csproj" />
+  </ItemGroup>
+
+</Project>

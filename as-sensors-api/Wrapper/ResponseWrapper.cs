@@ -1,4 +1,4 @@
-﻿namespace AS.Sensors.API.Wrappers
+﻿namespace as_sensors_api.Wrapper
 {
     public class ResponseWrapper<T>
     {

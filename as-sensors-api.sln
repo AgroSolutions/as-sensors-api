@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AS.Sensors.API", "as-sensors-api\AS.Sensors.API.csproj", "{4CFB9529-1906-4628-889C-74239AC6432E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "as-sensors-api", "as-sensors-api\as-sensors-api.csproj", "{4CFB9529-1906-4628-889C-74239AC6432E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "as-sensors-application", "as-sensors-application\as-sensors-application.csproj", "{AD5C4E5B-C894-4996-98B6-CCAFED1D0378}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "as-sensors-infra", "as-sensors-infra\as-sensors-infra.csproj", "{C67DD3E1-C57A-4A29-B6C6-ABE9C04A41C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "as-sensors-domain", "as-sensors-domain\as-sensors-domain.csproj", "{B3E843A0-446D-4357-B6D2-DB128E42A6F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{4CFB9529-1906-4628-889C-74239AC6432E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CFB9529-1906-4628-889C-74239AC6432E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CFB9529-1906-4628-889C-74239AC6432E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD5C4E5B-C894-4996-98B6-CCAFED1D0378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD5C4E5B-C894-4996-98B6-CCAFED1D0378}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD5C4E5B-C894-4996-98B6-CCAFED1D0378}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD5C4E5B-C894-4996-98B6-CCAFED1D0378}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C67DD3E1-C57A-4A29-B6C6-ABE9C04A41C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C67DD3E1-C57A-4A29-B6C6-ABE9C04A41C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C67DD3E1-C57A-4A29-B6C6-ABE9C04A41C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C67DD3E1-C57A-4A29-B6C6-ABE9C04A41C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3E843A0-446D-4357-B6D2-DB128E42A6F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3E843A0-446D-4357-B6D2-DB128E42A6F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3E843A0-446D-4357-B6D2-DB128E42A6F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3E843A0-446D-4357-B6D2-DB128E42A6F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
