@@ -1,13 +1,11 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson.Serialization.Serializers;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 
-namespace as_sensors_domain.Entities
+namespace as_sensors_application.DTO
 {
-    public class SensorData
+    public class SensorDataDTOResponse
     {
-        [BsonId]
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public int SensorId { get; set; }
         public DateTime Date { get; set; }
         public double SoilMoisturePercentage { get; set; }

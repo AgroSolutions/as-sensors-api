@@ -6,8 +6,8 @@ namespace as_sensors_application.Services.Interfaces
 {
     public interface ISensorDataService
     {
-        Task<SensorDataDTO> GetSensorDataAsync();
-        Task<SensorDataDTO> AddSensorDataAsync(SensorDataDTO dto);
+        Task<SensorDataDTOResponse> GetSensorDataAsync();
+        Task<SensorDataDTOResponse> AddSensorDataAsync(SensorDataDTO dto, CancellationToken ct = default);
 
     }
 }
