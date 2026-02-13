@@ -7,8 +7,11 @@ namespace as_sensors_domain.Entities
     public class SensorData
     {
         [BsonId]
-        public int Id { get; set; } 
-        public int SensorId { get; set; }
+        [BsonRepresentation(BsonType.String)]
+        public Guid Id { get; set; } = Guid.NewGuid();
+
+        [BsonRepresentation(BsonType.String)]
+        public Guid SensorId { get; set; }
         public DateTime Date { get; set; }
         public double SoilMoisturePercentage { get; set; }
         public int TemperatureC { get; set; }

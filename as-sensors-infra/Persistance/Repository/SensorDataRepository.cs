@@ -15,13 +15,16 @@ namespace as_sensors_infra.Persistance.Repository
             _sensorData = ctx.Database.GetCollection<SensorData>("sensors_data");
         }
 
-        public async Task<SensorData?> GetByIdAsync(int id, CancellationToken ct = default)
-            => await _sensorData.Find(x => x.Id == id).FirstOrDefaultAsync(ct);
-
         public async Task<SensorData> InsertAsync(SensorData sensorData, CancellationToken ct = default)
         {
             await _sensorData.InsertOneAsync(sensorData, cancellationToken: ct);
             return sensorData;
         }
+
+        public Task<List<SensorData>> GetBySensorIdAsync(Guid sensorId, CancellationToken ct = default)
+            => _sensorData
+                .Find(x => x.SensorId == sensorId)
+                .SortByDescending(x => x.Date)
+                .ToListAsync(ct);
     }
 }

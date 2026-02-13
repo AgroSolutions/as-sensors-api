@@ -17,7 +17,6 @@ namespace as_sensors_application.Services
         {
             var entity = new SensorData
             {
-                Id = 1,
                 SensorId = dto.SensorId,
                 Date = DateTime.UtcNow,
                 SoilMoisturePercentage = dto.SoilMoisturePercentage,
@@ -39,9 +38,19 @@ namespace as_sensors_application.Services
 
         }
 
-        public Task<SensorDataDTOResponse> GetSensorDataAsync()
+        public async Task<List<SensorDataDTOResponse>> GetSensorDataBySensorIdAsync(Guid sensorId, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            var items = await _repository.GetBySensorIdAsync(sensorId, ct);
+
+            return items.Select(x => new SensorDataDTOResponse
+            {
+                Id = x.Id,
+                SensorId = x.SensorId,
+                Date = x.Date,
+                SoilMoisturePercentage = x.SoilMoisturePercentage,
+                TemperatureC = x.TemperatureC,
+                PrecipitationLevelPercentage = x.PrecipitationLevelPercentage
+            }).ToList();
         }
     }
 }

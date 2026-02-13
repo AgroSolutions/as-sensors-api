@@ -13,16 +13,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//DI
-
-
+#region DI
 builder.Services.AddSingleton<MongoContext>();
-
-
 builder.Services.AddScoped<as_sensors_application.Services.SensorDataService>();
 builder.Services.AddScoped<as_sensors_infra.Persistance.Repository.Interfaces.ISensorDataRepository,
     as_sensors_infra.Persistance.Repository.SensorDataRepository>();
-
+builder.Services.AddScoped<as_sensors_application.Services.SensorService>();
+builder.Services.AddScoped<as_sensors_infra.Persistance.Repository.Interfaces.ISensorRepository,
+    as_sensors_infra.Persistance.Repository.SensorRepository>();
+#endregion
 
 var app = builder.Build();
 

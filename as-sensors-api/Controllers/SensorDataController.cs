@@ -16,10 +16,10 @@ namespace as_sensors_api.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetSensorData()
+        [HttpGet("{sensorId:guid}")]
+        public async Task<IActionResult> GetSensorData([FromRoute] Guid sensorId, CancellationToken ct)
         {
-            var items = await _service.GetSensorDataAsync();
+            var items = await _service.GetSensorDataBySensorIdAsync(sensorId, ct);
             return Ok(items);
         }
 

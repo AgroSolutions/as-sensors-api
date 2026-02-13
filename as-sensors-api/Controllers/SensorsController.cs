@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Cors.Infrastructure;
+﻿using as_sensors_application.DTO;
+using as_sensors_application.Services;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -9,6 +11,19 @@ namespace as_sensors_api.Controllers
     [Route("[controller]")]
     public class SensorsController : ApiBaseController
     {
+        private readonly SensorService _service;
+
+        public SensorsController(SensorService service)
+        {
+            _service = service;
+        }
+        [HttpPost]
+        public async Task<IActionResult> SaveSensor([FromBody] Guid fieldId, CancellationToken ct)
+        {
+            var created = await _service.AddSensorAsync(fieldId, ct);
+            return Ok(created);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetSensor()
         {
