@@ -10,6 +10,6 @@ namespace as_sensors_infra.Persistance.Repository.Interfaces
     public interface ISensorRepository
     {
         Task<Sensor> InsertAsync(Sensor sensor, CancellationToken ct = default);
-
+        Task<List<Sensor>> GetAllAsync(CancellationToken ct = default);
     }
 }

@@ -19,6 +19,11 @@ namespace as_sensors_infra.Persistance.Repository
             _sensor = ctx.Database.GetCollection<Sensor>("sensors");
         }
 
+        public async Task<List<Sensor>> GetAllAsync(CancellationToken ct = default)
+            =>await _sensor
+                .Find(FilterDefinition<Sensor>.Empty)
+                .ToListAsync(ct);
+
         public async Task<Sensor> InsertAsync(Sensor sensor, CancellationToken ct = default)
         {
             await _sensor.InsertOneAsync(sensor, cancellationToken: ct);

@@ -35,5 +35,21 @@ namespace as_sensors_application.Services
             };
 
         }
+
+        public async Task<List<SensorDTOResponse>> GetAllSensorsAsync(CancellationToken ct = default)
+        {
+            var sensors = await _repository.GetAllAsync(ct);
+
+            return sensors.Select(s => new SensorDTOResponse
+            {
+                Id = s.Id,
+                FieldId = s.FieldId,
+            }).ToList();
+        }
+
+        public async Task<List<SensorDTOResponse>> GetSensorByFieldId(Guid fieldId, CancellationToken ct = default)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
