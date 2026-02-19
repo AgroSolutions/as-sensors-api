@@ -11,5 +11,7 @@ namespace as_sensors_infra.Persistance.Repository.Interfaces
     {
         Task<Sensor> InsertAsync(Sensor sensor, CancellationToken ct = default);
         Task<List<Sensor>> GetAllAsync(CancellationToken ct = default);
+        Task<List<Sensor>> GetAllByFieldIdAsync(Guid fieldId, CancellationToken ct = default);
+        Task<bool> DeleteAsync(Guid sensorId, CancellationToken ct = default);
     }
 }

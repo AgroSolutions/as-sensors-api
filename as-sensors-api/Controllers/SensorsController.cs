@@ -38,16 +38,19 @@ namespace as_sensors_api.Controllers
             return Ok(items);
         }
 
-        /*[HttpPut]
-        public async Task<IActionResult> UpdateSensor()
-        {
-            return Success("Carrinho encontrado/criado com sucesso.");
-        }
+        /* [HttpPut]
+         public async Task<IActionResult> UpdateSensor()
+         {
+             return Success("Carrinho encontrado/criado com sucesso.");
+         }*/
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteSensor()
+        /*[HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
         {
-            return Success("Carrinho encontrado/criado com sucesso.");
+            var deleted = await _service.DeleteSensorAsync(id, ct);
+            if (!deleted) return NotFound();
+
+            return NoContent();
         }*/
     }
 }

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "as-sensors-infra", "as-sens
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "as-sensors-domain", "as-sensors-domain\as-sensors-domain.csproj", "{B3E843A0-446D-4357-B6D2-DB128E42A6F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "as-sensors-domain-tests", "as-sensors-domain-tests\as-sensors-domain-tests.csproj", "{D33C1BE8-24B0-49BF-9B4D-054BB13EFCD8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{B3E843A0-446D-4357-B6D2-DB128E42A6F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3E843A0-446D-4357-B6D2-DB128E42A6F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3E843A0-446D-4357-B6D2-DB128E42A6F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D33C1BE8-24B0-49BF-9B4D-054BB13EFCD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D33C1BE8-24B0-49BF-9B4D-054BB13EFCD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D33C1BE8-24B0-49BF-9B4D-054BB13EFCD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D33C1BE8-24B0-49BF-9B4D-054BB13EFCD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
