@@ -2,7 +2,7 @@ name: Pipeline CI/CD (AWS)
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   test:
