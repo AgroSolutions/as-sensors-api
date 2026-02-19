@@ -1,0 +1,28 @@
+name: Pipeline CI/CD (AWS)
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  test:
+    name: Running Tests
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Download source
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Dependency Restore
+        run: dotnet restore
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Domain Tests
+        run: dotnet test ./as-sensors-domain-tests/as-sensors-domain-tests.csproj --configuration Release --no-build --verbosity normal
