@@ -19,11 +19,13 @@ namespace as_sensors_application.Services
             _repository = repository;
         }
 
-        public async Task<SensorDTOResponse> AddSensorAsync(Guid fieldId, CancellationToken ct = default)
+        public async Task<SensorDTOResponse> AddSensorAsync(SensorDTOResquest dto, CancellationToken ct = default)
         {
             var entity = new Sensor
             {
-                FieldId = fieldId,
+                Name = dto.Name,
+                FieldId = dto.FieldId,
+                CreatedAt = DateTime.Now, 
             };
 
             var created = await _repository.InsertAsync(entity, ct);
@@ -31,7 +33,9 @@ namespace as_sensors_application.Services
             return new SensorDTOResponse
             {
                 Id = created.Id,
+                Name = created.Name,
                 FieldId = created.FieldId,
+                CreatedAt = created.CreatedAt,
             };
 
         }
@@ -48,7 +52,9 @@ namespace as_sensors_application.Services
             return sensors.Select(s => new SensorDTOResponse
             {
                 Id = s.Id,
+                Name = s.Name,
                 FieldId = s.FieldId,
+                CreatedAt = s.CreatedAt,
             }).ToList();
         }
 
@@ -59,7 +65,9 @@ namespace as_sensors_application.Services
             return items.Select(x => new SensorDTOResponse
             {
                 Id = x.Id,
+                Name = x.Name,
                 FieldId = x.FieldId,
+                CreatedAt = x.CreatedAt,
             }).ToList();
         }
     }

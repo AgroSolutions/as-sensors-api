@@ -18,9 +18,9 @@ namespace as_sensors_api.Controllers
             _service = service;
         }
         [HttpPost]
-        public async Task<IActionResult> SaveSensor([FromBody] Guid fieldId, CancellationToken ct)
+        public async Task<IActionResult> SaveSensor([FromBody] SensorDTOResquest dto, CancellationToken ct)
         {
-            var created = await _service.AddSensorAsync(fieldId, ct);
+            var created = await _service.AddSensorAsync(dto, ct);
             return Ok(created);
         }
 

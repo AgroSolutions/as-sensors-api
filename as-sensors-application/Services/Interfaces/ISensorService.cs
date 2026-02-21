@@ -9,7 +9,7 @@ namespace as_sensors_application.Services.Interfaces
 {
     public interface ISensorService
     {
-        Task<SensorDTOResponse> AddSensorAsync(Guid fieldId, CancellationToken ct = default);
+        Task<SensorDTOResponse> AddSensorAsync(SensorDTOResquest dto, CancellationToken ct = default);
         Task<List<SensorDTOResponse>> GetAllSensorsAsync(CancellationToken ct = default);
         Task<List<SensorDTOResponse>> GetSensorByFieldId(Guid fieldId, CancellationToken ct = default);
         Task<bool> DeleteSensorAsync(Guid id, CancellationToken ct = default);
