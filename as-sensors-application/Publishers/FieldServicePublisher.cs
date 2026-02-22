@@ -3,11 +3,6 @@ using as_sensors_application.Publishers.Interfaces;
 using as_sensors_domain.Messaging.Interfaces;
 using as_sensors_infra.Messaging.Config;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace as_sensors_application.Publishers
 {

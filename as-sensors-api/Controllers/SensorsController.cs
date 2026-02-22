@@ -1,9 +1,7 @@
 ﻿using as_sensors_application.DTO;
 using as_sensors_application.Services;
-using Microsoft.AspNetCore.Cors.Infrastructure;
+using as_sensors_application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using MongoDB.Driver;
 
 namespace as_sensors_api.Controllers
 {
@@ -11,9 +9,9 @@ namespace as_sensors_api.Controllers
     [Route("[controller]")]
     public class SensorsController : ApiBaseController
     {
-        private readonly SensorService _service;
+        private readonly ISensorService _service;
 
-        public SensorsController(SensorService service)
+        public SensorsController(ISensorService service)
         {
             _service = service;
         }

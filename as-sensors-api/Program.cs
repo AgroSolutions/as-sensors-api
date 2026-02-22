@@ -6,6 +6,9 @@ using MongoDB.Bson;
 using as_sensors_infra.Messaging.Config;
 using as_sensors_infra;
 using as_sensors_api.Configurations;
+using as_sensors_domain.Messaging.Interfaces;
+using as_sensors_application.DTO;
+using as_sensors_application.Handler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,11 +28,19 @@ builder.Services.AddSingleton<MongoContext>();
 builder.Services.AddScoped<as_sensors_application.Services.SensorDataService>();
 builder.Services.AddScoped<as_sensors_infra.Persistance.Repository.Interfaces.ISensorDataRepository,
     as_sensors_infra.Persistance.Repository.SensorDataRepository>();
-builder.Services.AddScoped<as_sensors_application.Services.SensorService>();
+builder.Services.AddScoped<as_sensors_application.Services.Interfaces.ISensorService,
+    as_sensors_application.Services.SensorService>();
+//builder.Services.AddScoped<as_sensors_application.Services.SensorService>();
 builder.Services.AddScoped<as_sensors_infra.Persistance.Repository.Interfaces.ISensorRepository,
     as_sensors_infra.Persistance.Repository.SensorRepository>();
 
-# region Messaging
+#region Messaging
+
+
+//services.AddTransient<IMessageHandler<MessageDTO>, GameIncreasePopularityHandler>();
+
+builder.Services.AddTransient<IMessageHandler<SensorDTOResquest>, CreateSensorHandler>();
+
 var messagingSection = builder.Configuration.GetSection("Messaging");
 if (!messagingSection.Exists())
     throw new InvalidOperationException("Section 'Messaging' not found in configuration.");

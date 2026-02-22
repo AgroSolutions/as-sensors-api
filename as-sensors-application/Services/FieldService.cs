@@ -1,17 +1,20 @@
 ﻿using as_sensors_application.Publishers.Interfaces;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 
 namespace as_sensors_application.Services
 {
     public class FieldService(IHttpClientFactory httpClientFactory, IFieldServicePublisher fieldServicePublisher)
     {
-        public Task UpdateFieldStatus()
+        public Task calculateFieldStatus()
+        {
+            return Task.CompletedTask;
+        }
+        public Task UpdateFieldStatus(Guid _fieldId, string _status)
         {
             var dto = new DTO.UpdateFieldStatusDTO
             {
-                UserId = user.Id,
-                GamesId = gamesId
+                fieldId = _fieldId,
+                status = _status,
+                date = DateTime.UtcNow,
             };
             return fieldServicePublisher.UpdateFieldStatus(dto);
         }
