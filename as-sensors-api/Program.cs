@@ -1,4 +1,4 @@
-using as_sensors_infra.Persistance.Config;
+﻿using as_sensors_infra.Persistance.Config;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson.Serialization;
@@ -9,6 +9,7 @@ using as_sensors_api.Configurations;
 using as_sensors_domain.Messaging.Interfaces;
 using as_sensors_application.DTO;
 using as_sensors_application.Handler;
+using as_sensors_api;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +53,9 @@ builder.Services.ConfigureAmazonSQS(builder.Configuration);
 #endregion
 
 #endregion
+
+// ✅ Worker
+builder.Services.AddHostedService<WorkerCreateSensor>();
 
 var app = builder.Build();
 
