@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using as_sensors_api.Wrapper;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace as_sensors_api.Configurations

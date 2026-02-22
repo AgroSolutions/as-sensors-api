@@ -1,4 +1,4 @@
-﻿using FCG.Payments.API.Configurations;
+﻿using as_sensors_api.Configurations;
 using Microsoft.OpenApi.Models;
 
 namespace as_sensors_api.Configurations
