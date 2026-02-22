@@ -10,6 +10,9 @@ using as_sensors_domain.Messaging.Interfaces;
 using as_sensors_application.DTO;
 using as_sensors_application.Handler;
 using as_sensors_api;
+using as_sensors_application.Services;
+using as_sensors_application.Publishers.Interfaces;
+using as_sensors_application.Publishers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +28,11 @@ builder.Services.AddSwaggerConfiguration();
 #endregion
 
 #region DI
+builder.Services.AddHttpClient();
+
 builder.Services.AddSingleton<MongoContext>();
+builder.Services.AddScoped<FieldService>();
+builder.Services.AddScoped<IFieldServicePublisher, FieldServicePublisher>();
 builder.Services.AddScoped<as_sensors_application.Services.SensorDataService>();
 builder.Services.AddScoped<as_sensors_infra.Persistance.Repository.Interfaces.ISensorDataRepository,
     as_sensors_infra.Persistance.Repository.SensorDataRepository>();

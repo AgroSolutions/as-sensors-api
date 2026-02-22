@@ -4,7 +4,7 @@ namespace as_sensors_application.Services
 {
     public class FieldService(IHttpClientFactory httpClientFactory, IFieldServicePublisher fieldServicePublisher)
     {
-        public Task calculateFieldStatus()
+        public Task CalculateFieldStatus()
         {
             return Task.CompletedTask;
         }

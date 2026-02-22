@@ -8,10 +8,12 @@ namespace as_sensors_application.Services
     public class SensorDataService : ISensorDataService
     {
         private readonly ISensorDataRepository _repository;
+        private readonly FieldService _fieldService;
 
-        public SensorDataService(ISensorDataRepository repository)
+        public SensorDataService(ISensorDataRepository repository, FieldService fieldService)
         {
             _repository = repository;
+            _fieldService = fieldService;
         }
         public async Task<SensorDataDTOResponse> AddSensorDataAsync(SensorDataDTO dto, CancellationToken ct = default)
         {
@@ -25,6 +27,11 @@ namespace as_sensors_application.Services
             };
 
             var created = await _repository.InsertAsync(entity, ct);
+
+            var taskField = _fieldService.UpdateFieldStatus(
+                Guid.Parse("11111111-2222-3333-4444-555555555555"),
+                "seca"
+            );
 
             return new SensorDataDTOResponse
             {
