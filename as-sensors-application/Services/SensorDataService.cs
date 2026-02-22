@@ -29,8 +29,8 @@ namespace as_sensors_application.Services
             var created = await _repository.InsertAsync(entity, ct);
 
             var taskField = _fieldService.UpdateFieldStatus(
-                Guid.Parse("11111111-2222-3333-4444-555555555555"),
-                "seca"
+                Guid.Parse("a366eae4-44ea-4d9e-b4fb-6e2a2e465822"),
+                "FloodRisk"
             );
 
             return new SensorDataDTOResponse
