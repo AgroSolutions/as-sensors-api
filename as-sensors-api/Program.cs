@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson;
+using as_sensors_infra.Messaging.Config;
+using as_sensors_infra;
 using as_sensors_api.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +28,18 @@ builder.Services.AddScoped<as_sensors_infra.Persistance.Repository.Interfaces.IS
 builder.Services.AddScoped<as_sensors_application.Services.SensorService>();
 builder.Services.AddScoped<as_sensors_infra.Persistance.Repository.Interfaces.ISensorRepository,
     as_sensors_infra.Persistance.Repository.SensorRepository>();
+
+# region Messaging
+var messagingSection = builder.Configuration.GetSection("Messaging");
+if (!messagingSection.Exists())
+    throw new InvalidOperationException("Section 'Messaging' not found in configuration.");
+
+var queuesSection = messagingSection.GetSection("Queues");
+builder.Services.Configure<QueuesOptions>(queuesSection);
+
+builder.Services.ConfigureAmazonSQS(builder.Configuration);
+#endregion
+
 #endregion
 
 var app = builder.Build();
