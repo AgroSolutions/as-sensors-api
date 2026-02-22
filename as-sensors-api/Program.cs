@@ -5,15 +5,20 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson;
 using as_sensors_infra.Messaging.Config;
 using as_sensors_infra;
+using as_sensors_api.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+#region Swagger
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerConfiguration();
+#endregion
 
 #region DI
 builder.Services.AddSingleton<MongoContext>();
@@ -40,12 +45,22 @@ builder.Services.ConfigureAmazonSQS(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//app.UseSwagger();
+//app.UseSwaggerUI();
+
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.IsProduction())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerConfiguration();
+}
+else
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
 }
 
+app.UseDeveloperExceptionPage();
+app.UseExceptionHandler("/Error");
+app.UseHsts();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
