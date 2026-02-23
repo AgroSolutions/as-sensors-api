@@ -8,8 +8,8 @@ namespace as_sensors_application.DTO
 {
     public class UpdateFieldStatusDTO
     {
-        public required Guid fieldId {  get; set; }
-        public required string status { get; set; }
-        public required DateTime date { get; set; }
+        public required Guid FieldId {  get; set; }
+        public required string Status { get; set; }
+        public required DateTime UpdatedAt { get; set; }
     }
 }

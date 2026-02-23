@@ -12,9 +12,9 @@ namespace as_sensors_application.Services
         {
             var dto = new DTO.UpdateFieldStatusDTO
             {
-                fieldId = _fieldId,
-                status = _status,
-                date = DateTime.UtcNow,
+                FieldId = _fieldId,
+                Status = _status,
+                UpdatedAt = DateTime.UtcNow,
             };
             return fieldServicePublisher.UpdateFieldStatus(dto);
         }
