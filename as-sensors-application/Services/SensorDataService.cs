@@ -1,63 +1,67 @@
 ﻿using as_sensors_application.DTO;
+using as_sensors_application.Observability;
 using as_sensors_application.Services.Interfaces;
 using as_sensors_domain.Entities;
 using as_sensors_infra.Persistance.Repository.Interfaces;
 
-namespace as_sensors_application.Services
+namespace as_sensors_application.Services;
+
+public class SensorDataService : ISensorDataService
 {
-    public class SensorDataService : ISensorDataService
+    private readonly ISensorDataRepository _repository;
+    private readonly FieldService _fieldService;
+    private readonly ISensorTelemetry _telemetry;
+
+    public SensorDataService(ISensorDataRepository repository, FieldService fieldService, ISensorTelemetry telemetry)
     {
-        private readonly ISensorDataRepository _repository;
-        private readonly FieldService _fieldService;
-
-        public SensorDataService(ISensorDataRepository repository, FieldService fieldService)
+        _repository = repository;
+        _fieldService = fieldService;
+        _telemetry = telemetry;
+    }
+    public async Task<SensorDataDTOResponse> AddSensorDataAsync(SensorDataDTO dto, CancellationToken ct = default)
+    {
+        var entity = new SensorData
         {
-            _repository = repository;
-            _fieldService = fieldService;
-        }
-        public async Task<SensorDataDTOResponse> AddSensorDataAsync(SensorDataDTO dto, CancellationToken ct = default)
+            SensorId = dto.SensorId,
+            Date = DateTime.UtcNow,
+            SoilMoisturePercentage = dto.SoilMoisturePercentage,
+            TemperatureC = dto.TemperatureC,
+            PrecipitationLevelPercentage = dto.PrecipitationLevelPercentage,
+        };
+
+        var created = await _repository.InsertAsync(entity, ct);
+
+        _telemetry.SensorReadingStored(created.SensorId, created.TemperatureC, created.SoilMoisturePercentage, created.PrecipitationLevelPercentage);
+
+        var taskField = _fieldService.UpdateFieldStatus(
+            Guid.Parse("a366eae4-44ea-4d9e-b4fb-6e2a2e465822"),
+            "FloodRisk"
+        );
+
+        return new SensorDataDTOResponse
         {
-            var entity = new SensorData
-            {
-                SensorId = dto.SensorId,
-                Date = DateTime.UtcNow,
-                SoilMoisturePercentage = dto.SoilMoisturePercentage,
-                TemperatureC = dto.TemperatureC,
-                PrecipitationLevelPercentage = dto.PrecipitationLevelPercentage,
-            };
+            Id = created.Id,
+            SensorId = created.SensorId,
+            Date = created.Date,
+            SoilMoisturePercentage = created.SoilMoisturePercentage,
+            TemperatureC = created.TemperatureC,
+            PrecipitationLevelPercentage = created.PrecipitationLevelPercentage
+        };
 
-            var created = await _repository.InsertAsync(entity, ct);
+    }
 
-            var taskField = _fieldService.UpdateFieldStatus(
-                Guid.Parse("a366eae4-44ea-4d9e-b4fb-6e2a2e465822"),
-                "FloodRisk"
-            );
+    public async Task<List<SensorDataDTOResponse>> GetSensorDataBySensorIdAsync(Guid sensorId, CancellationToken ct = default)
+    {
+        var items = await _repository.GetBySensorIdAsync(sensorId, ct);
 
-            return new SensorDataDTOResponse
-            {
-                Id = created.Id,
-                SensorId = created.SensorId,
-                Date = created.Date,
-                SoilMoisturePercentage = created.SoilMoisturePercentage,
-                TemperatureC = created.TemperatureC,
-                PrecipitationLevelPercentage = created.PrecipitationLevelPercentage
-            };
-
-        }
-
-        public async Task<List<SensorDataDTOResponse>> GetSensorDataBySensorIdAsync(Guid sensorId, CancellationToken ct = default)
+        return items.Select(x => new SensorDataDTOResponse
         {
-            var items = await _repository.GetBySensorIdAsync(sensorId, ct);
-
-            return items.Select(x => new SensorDataDTOResponse
-            {
-                Id = x.Id,
-                SensorId = x.SensorId,
-                Date = x.Date,
-                SoilMoisturePercentage = x.SoilMoisturePercentage,
-                TemperatureC = x.TemperatureC,
-                PrecipitationLevelPercentage = x.PrecipitationLevelPercentage
-            }).ToList();
-        }
+            Id = x.Id,
+            SensorId = x.SensorId,
+            Date = x.Date,
+            SoilMoisturePercentage = x.SoilMoisturePercentage,
+            TemperatureC = x.TemperatureC,
+            PrecipitationLevelPercentage = x.PrecipitationLevelPercentage
+        }).ToList();
     }
 }
