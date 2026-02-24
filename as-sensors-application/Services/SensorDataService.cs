@@ -33,26 +33,19 @@ public class SensorDataService : ISensorDataService
 
         _telemetry.SensorReadingStored(created.SensorId, created.TemperatureC, created.SoilMoisturePercentage, created.PrecipitationLevelPercentage);
 
-        var taskField = _fieldService.UpdateFieldStatus(
-            Guid.Parse("a366eae4-44ea-4d9e-b4fb-6e2a2e465822"),
-            "FloodRisk"
-        );
-            /*var taskField = _fieldService.UpdateFieldStatus(
-                Guid.Parse("a366eae4-44ea-4d9e-b4fb-6e2a2e465822"),
-                "FloodRisk"
-            );*/
+        
 
-            await _fieldService.CalculateFieldStatus(
-                 sensorId: created.SensorId,
-                 newReading: new SensorDataDTO
-                 {
-                     SensorId = created.SensorId,
-                     SoilMoisturePercentage = created.SoilMoisturePercentage,
-                     TemperatureC = created.TemperatureC,
-                     PrecipitationLevelPercentage = created.PrecipitationLevelPercentage
-                 },
-                ct: ct
-            );
+       await _fieldService.CalculateFieldStatus(
+          sensorId: created.SensorId,
+          newReading: new SensorDataDTO
+          {
+             SensorId = created.SensorId,
+             SoilMoisturePercentage = created.SoilMoisturePercentage,
+             TemperatureC = created.TemperatureC,
+             PrecipitationLevelPercentage = created.PrecipitationLevelPercentage
+          },
+          ct: ct
+       );
 
         return new SensorDataDTOResponse
         {
