@@ -62,7 +62,7 @@ builder.Services.ConfigureAmazonSQS(builder.Configuration);
 #endregion
 
 // ✅ Worker
-builder.Services.AddHostedService<WorkerCreateSensor>();
+//builder.Services.AddHostedService<WorkerCreateSensor>();
 
 var app = builder.Build();
 

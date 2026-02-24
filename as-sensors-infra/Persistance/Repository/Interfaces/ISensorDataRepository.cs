@@ -6,5 +6,6 @@ namespace as_sensors_infra.Persistance.Repository.Interfaces
     {
         Task<SensorData> InsertAsync(SensorData sensorData, CancellationToken ct = default);
         Task<List<SensorData>> GetBySensorIdAsync(Guid sensorId, CancellationToken ct = default);
+        Task<List<SensorData>> GetLast24HoursBySensorIdAsync(Guid sensorId, CancellationToken ct = default);
     }
 }

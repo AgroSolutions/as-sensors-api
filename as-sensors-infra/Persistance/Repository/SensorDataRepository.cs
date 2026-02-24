@@ -26,5 +26,17 @@ namespace as_sensors_infra.Persistance.Repository
                 .Find(x => x.SensorId == sensorId)
                 .SortByDescending(x => x.Date)
                 .ToListAsync(ct);
+
+        public async Task<List<SensorData>> GetLast24HoursBySensorIdAsync(Guid sensorId, CancellationToken ct = default)
+        {
+            var since = DateTime.UtcNow.AddHours(-24);
+
+            var filter = Builders<SensorData>.Filter.And(
+                Builders<SensorData>.Filter.Eq(x => x.SensorId, sensorId),
+                Builders<SensorData>.Filter.Gte(x => x.Date, since)
+            );
+
+            return await _sensorData.Find(filter).SortByDescending(x => x.Date).ToListAsync(ct);
+        }
     }
 }

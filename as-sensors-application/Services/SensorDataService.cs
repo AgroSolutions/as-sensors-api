@@ -28,9 +28,21 @@ namespace as_sensors_application.Services
 
             var created = await _repository.InsertAsync(entity, ct);
 
-            var taskField = _fieldService.UpdateFieldStatus(
+            /*var taskField = _fieldService.UpdateFieldStatus(
                 Guid.Parse("a366eae4-44ea-4d9e-b4fb-6e2a2e465822"),
                 "FloodRisk"
+            );*/
+
+            await _fieldService.CalculateFieldStatus(
+                 sensorId: created.SensorId,
+                 newReading: new SensorDataDTO
+                 {
+                     SensorId = created.SensorId,
+                     SoilMoisturePercentage = created.SoilMoisturePercentage,
+                     TemperatureC = created.TemperatureC,
+                     PrecipitationLevelPercentage = created.PrecipitationLevelPercentage
+                 },
+                ct: ct
             );
 
             return new SensorDataDTOResponse
