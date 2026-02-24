@@ -1,5 +1,6 @@
 ﻿using as_sensors_application.DTO;
 using as_sensors_application.Publishers;
+using as_sensors_application.Observability;
 using as_sensors_application.Publishers.Interfaces;
 using as_sensors_domain.Enum;
 using as_sensors_infra.Persistance.Repository.Interfaces;
@@ -11,6 +12,7 @@ namespace as_sensors_application.Services
         IFieldServicePublisher fieldServicePublisher,
         ISensorDataRepository sensorDataRepository
         )
+    public class FieldService(IHttpClientFactory httpClientFactory, IFieldServicePublisher fieldServicePublisher, ISensorTelemetry telemetry)
     {
 
         public async Task CalculateFieldStatus(Guid sensorId, SensorDataDTO newReading, CancellationToken ct = default)
@@ -53,6 +55,7 @@ namespace as_sensors_application.Services
         }
 
         public Task UpdateFieldStatus(Guid _fieldId, string _status)
+        public async Task UpdateFieldStatus(Guid _fieldId, string _status)
         {
             var dto = new DTO.UpdateFieldStatusDTO
             {
@@ -60,7 +63,17 @@ namespace as_sensors_application.Services
                 Status = _status,
                 UpdatedAt = DateTime.UtcNow,
             };
-            return fieldServicePublisher.UpdateFieldStatus(dto);
+
+            try
+            {
+                await fieldServicePublisher.UpdateFieldStatus(dto);
+                telemetry.FieldStatusUpdatePublished(_status, success: true);
+            }
+            catch (Exception ex)
+            {
+                telemetry.FieldStatusUpdatePublished(_status, success: false, failureReaon: ex.GetType().Name);
+                throw;
+            }
         }
     }
 }

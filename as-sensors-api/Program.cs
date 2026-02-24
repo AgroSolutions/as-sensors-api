@@ -1,18 +1,21 @@
-﻿using as_sensors_infra.Persistance.Config;
-using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Bson.Serialization.Serializers;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson;
-using as_sensors_infra.Messaging.Config;
-using as_sensors_infra;
+﻿using as_sensors_api;
 using as_sensors_api.Configurations;
-using as_sensors_domain.Messaging.Interfaces;
+using as_sensors_api.Observability;
 using as_sensors_application.DTO;
 using as_sensors_application.Handler;
-using as_sensors_api;
-using as_sensors_application.Services;
-using as_sensors_application.Publishers.Interfaces;
+using as_sensors_application.Observability;
 using as_sensors_application.Publishers;
+using as_sensors_application.Publishers.Interfaces;
+using as_sensors_application.Services;
+using as_sensors_domain.Messaging.Interfaces;
+using as_sensors_infra;
+using as_sensors_infra.Messaging.Config;
+using as_sensors_infra.Persistance.Config;
+using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +44,7 @@ builder.Services.AddScoped<as_sensors_application.Services.Interfaces.ISensorSer
 //builder.Services.AddScoped<as_sensors_application.Services.SensorService>();
 builder.Services.AddScoped<as_sensors_infra.Persistance.Repository.Interfaces.ISensorRepository,
     as_sensors_infra.Persistance.Repository.SensorRepository>();
+builder.Services.AddSingleton<ISensorTelemetry, PrometheusSensorTelemetry>();
 
 #region Messaging
 
@@ -84,6 +88,10 @@ app.UseDeveloperExceptionPage();
 app.UseExceptionHandler("/Error");
 app.UseHsts();
 app.UseHttpsRedirection();
+
+app.UseRouting();
+app.UseHttpMetrics();
+app.MapMetrics();
 
 app.UseAuthorization();
 
