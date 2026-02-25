@@ -40,5 +40,14 @@ namespace as_sensors_infra.Persistance.Repository
             await _sensor.InsertOneAsync(sensor, cancellationToken: ct);
             return sensor;
         }
+
+        public async Task<Guid> GetFieldIdBySensorIdAsync(Guid sensorId, CancellationToken ct = default)
+        {
+            return await _sensor
+                .Find(s => s.Id == sensorId)
+                .Project(s => (Guid)s.FieldId)
+                .FirstOrDefaultAsync(ct);
+        }
+
     }
 }

@@ -2,6 +2,7 @@
 using as_sensors_application.Observability;
 using as_sensors_application.Services.Interfaces;
 using as_sensors_domain.Entities;
+using as_sensors_infra.Persistance.Repository;
 using as_sensors_infra.Persistance.Repository.Interfaces;
 
 namespace as_sensors_application.Services;
@@ -58,6 +59,7 @@ public class SensorService : ISensorService
         }).ToList();
     }
 
+   
     public async Task<List<SensorDTOResponse>> GetSensorByFieldId(Guid fieldId, CancellationToken ct = default)
     {
         var items = await _repository.GetAllByFieldIdAsync(fieldId, ct);

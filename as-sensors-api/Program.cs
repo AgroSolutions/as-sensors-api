@@ -11,11 +11,14 @@ using as_sensors_domain.Messaging.Interfaces;
 using as_sensors_infra;
 using as_sensors_infra.Messaging.Config;
 using as_sensors_infra.Persistance.Config;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using Prometheus;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +49,34 @@ builder.Services.AddScoped<as_sensors_infra.Persistance.Repository.Interfaces.IS
     as_sensors_infra.Persistance.Repository.SensorRepository>();
 builder.Services.AddSingleton<ISensorTelemetry, PrometheusSensorTelemetry>();
 
+#region JWT
+// ✅ JWT Authentication
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var chaveSecreta = jwtSettings["Key"];
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(chaveSecreta!)),
+        ClockSkew = TimeSpan.Zero
+    };
+});
+#endregion
+
 #region Messaging
 
 
@@ -66,7 +97,7 @@ builder.Services.ConfigureAmazonSQS(builder.Configuration);
 #endregion
 
 // ✅ Worker
-//builder.Services.AddHostedService<WorkerCreateSensor>();
+builder.Services.AddHostedService<WorkerCreateSensor>();
 
 var app = builder.Build();
 

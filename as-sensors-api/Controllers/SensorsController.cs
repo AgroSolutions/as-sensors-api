@@ -1,6 +1,7 @@
 ﻿using as_sensors_application.DTO;
 using as_sensors_application.Services;
 using as_sensors_application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace as_sensors_api.Controllers
@@ -15,14 +16,16 @@ namespace as_sensors_api.Controllers
         {
             _service = service;
         }
-        [HttpPost]
+        
+        /*[HttpPost]
         public async Task<IActionResult> SaveSensor([FromBody] SensorDTOResquest dto, CancellationToken ct)
         {
             var created = await _service.AddSensorAsync(dto, ct);
             return Ok(created);
-        }
+        }*/
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<SensorDTOResponse>>> GetAll(CancellationToken ct)
         {
             var sensors = await _service.GetAllSensorsAsync(ct);
@@ -30,6 +33,7 @@ namespace as_sensors_api.Controllers
         }
 
         [HttpGet("{fieldId:guid}")]
+        [Authorize]
         public async Task<IActionResult> GetSensor([FromRoute] Guid fieldId, CancellationToken ct)
         {
             var items = await _service.GetSensorByFieldId(fieldId, ct);

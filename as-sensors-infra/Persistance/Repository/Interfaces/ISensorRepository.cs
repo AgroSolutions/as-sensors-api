@@ -13,5 +13,7 @@ namespace as_sensors_infra.Persistance.Repository.Interfaces
         Task<List<Sensor>> GetAllAsync(CancellationToken ct = default);
         Task<List<Sensor>> GetAllByFieldIdAsync(Guid fieldId, CancellationToken ct = default);
         Task<bool> DeleteAsync(Guid sensorId, CancellationToken ct = default);
+        Task<Guid> GetFieldIdBySensorIdAsync(Guid sensorId, CancellationToken ct = default);
+
     }
 }

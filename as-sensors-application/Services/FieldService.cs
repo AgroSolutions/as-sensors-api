@@ -9,30 +9,40 @@ namespace as_sensors_application.Services
         IHttpClientFactory httpClientFactory, 
         IFieldServicePublisher fieldServicePublisher,
         ISensorDataRepository sensorDataRepository,
+        ISensorRepository sensorRepository,
         ISensorTelemetry telemetry
         )
     {
 
         public async Task CalculateFieldStatus(Guid sensorId, SensorDataDTO newReading, CancellationToken ct = default)
         {
-            var last24h = await sensorDataRepository.GetLast24HoursBySensorIdAsync(sensorId, ct);
+            var fieldId = await sensorRepository.GetFieldIdBySensorIdAsync(sensorId);
 
-            var soilValues = last24h.Select(x => x.SoilMoisturePercentage).ToList();
-            var tempValues = last24h.Select(x => x.TemperatureC).ToList();
-            var precipValues = last24h.Select(x => x.PrecipitationLevelPercentage).ToList();
+            if (fieldId == Guid.Empty)
+            {
+                return;
+            }
+            else
+            {
 
-            soilValues.Add(newReading.SoilMoisturePercentage);
-            tempValues.Add(newReading.TemperatureC);
-            precipValues.Add(newReading.PrecipitationLevelPercentage);
+                var last24h = await sensorDataRepository.GetLast24HoursBySensorIdAsync(sensorId, ct);
 
-            var avgSoil = soilValues.Any() ? soilValues.Average() : 0;
-            var avgTemp = tempValues.Any() ? tempValues.Average() : 0;
-            var avgPrecip = precipValues.Any() ? precipValues.Average() : 0;
+                var soilValues = last24h.Select(x => x.SoilMoisturePercentage).ToList();
+                var tempValues = last24h.Select(x => x.TemperatureC).ToList();
+                var precipValues = last24h.Select(x => x.PrecipitationLevelPercentage).ToList();
 
-            var status = DetermineStatus(avgSoil, avgTemp, avgPrecip);
+                soilValues.Add(newReading.SoilMoisturePercentage);
+                tempValues.Add(newReading.TemperatureC);
+                precipValues.Add(newReading.PrecipitationLevelPercentage);
 
-            await UpdateFieldStatus(Guid.Parse("a366eae4-44ea-4d9e-b4fb-6e2a2e465822"), status);
+                var avgSoil = soilValues.Any() ? soilValues.Average() : 0;
+                var avgTemp = tempValues.Any() ? tempValues.Average() : 0;
+                var avgPrecip = precipValues.Any() ? precipValues.Average() : 0;
 
+                var status = DetermineStatus(avgSoil, avgTemp, avgPrecip);
+
+                await UpdateFieldStatus(fieldId, status);
+            }
         }
 
         private static string DetermineStatus(double soil, double temp, double precip)

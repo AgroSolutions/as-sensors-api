@@ -33,8 +33,6 @@ public class SensorDataService : ISensorDataService
 
         _telemetry.SensorReadingStored(created.SensorId, created.TemperatureC, created.SoilMoisturePercentage, created.PrecipitationLevelPercentage);
 
-        
-
        await _fieldService.CalculateFieldStatus(
           sensorId: created.SensorId,
           newReading: new SensorDataDTO
