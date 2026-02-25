@@ -79,6 +79,7 @@ jobs:
         mkdir -p rendered
         envsubst < k8s/sensors-api-deployment.yaml > rendered/sensors-api-deployment.yaml
         cp k8s/sensors-api-config.yaml rendered/sensors-api-config.yaml
+        cp k8s/sensors-api-monitor.yaml rendered/sensors-api-monitor.yaml
         cp k8s/sensors-api-service.yaml rendered/sensors-api-service.yaml
 
     # Deploy no Kubernetes
