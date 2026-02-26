@@ -50,5 +50,4 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull r
 Este projeto está licenciado sob a licença MIT.
 
 ---
-
 Feito com ❤️!
