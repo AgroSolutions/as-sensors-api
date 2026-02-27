@@ -1,6 +1,6 @@
 ﻿using as_sensors_application.DTO;
-using as_sensors_application.Observability;
 using as_sensors_application.Publishers.Interfaces;
+using as_sensors_domain.Enum;
 using as_sensors_infra.Persistance.Repository.Interfaces;
 
 namespace as_sensors_application.Services
@@ -43,29 +43,25 @@ namespace as_sensors_application.Services
             }
         }
 
-        private static string DetermineStatus(double soil, double temp, double precip)
+        private static FieldStatus DetermineStatus(double soil, double temp, double precip)
         {
             // Pest Risk: temp > 25 e precip > 75
             if (temp > 25 && precip > 75)
-                return "PestRisk";
+                return FieldStatus.PestRisk;
 
             // Drought alert: soil < 15 e precip <= 75
             if (soil < 15 && precip <= 75)
-                return "DroughtAlert";
+                return FieldStatus.DroughtAlert;
 
-            // Normal
-            if (soil <= 15 && temp <= 25 && precip <= 75)
-                return "Normal";
-
-            return "Unknown";
+            return FieldStatus.Normal;
         }
 
-        public async Task UpdateFieldStatus(Guid _fieldId, string _status)
+        public async Task UpdateFieldStatus(Guid fieldId, FieldStatus status)
         {
-            var dto = new DTO.UpdateFieldStatusDTO
+            var dto = new UpdateFieldStatusDTO
             {
-                FieldId = _fieldId,
-                Status = _status,
+                FieldId = fieldId,
+                Status = status,
                 UpdatedAt = DateTime.UtcNow,
             };
 
