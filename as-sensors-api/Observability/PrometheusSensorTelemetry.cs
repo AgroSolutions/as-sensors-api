@@ -32,6 +32,17 @@ public class PrometheusSensorTelemetry : ISensorTelemetry
     private static readonly Counter FieldStatusUpdatePublishTotal =
         Metrics.CreateCounter("as_sensors_field_status_update_publish_total", "Atualizações de status de campo publicadas",
             new CounterConfiguration { LabelNames = new[] { "service", "env", "status", "result", "failure_reason" } });
+
+    // Status atual do talhão
+    private static readonly Gauge FieldStatusCurrent =
+    Metrics.CreateGauge(
+        "as_sensors_field_status_current",
+        "Status atual do talhao",
+        new GaugeConfiguration
+        {
+            LabelNames = new[] { "field_id" }
+        });
+
     public void FieldStatusUpdatePublished(string status, bool success, string? failureReaon = null)
     {
         FieldStatusUpdatePublishTotal
@@ -51,4 +62,22 @@ public class PrometheusSensorTelemetry : ISensorTelemetry
         SoilMoisturePercentage.WithLabels(Service, Env).Set(soilMoisturePercentage);
         PrecipitationPercentage.WithLabels(Service, Env).Set(preciptationPercentage);
     }
+
+    public void StatusAlert(Guid fieldId, string status, string? failureReaon = null)
+    {
+        double numericStatus = status switch
+        {
+            "Unknown" => 0,
+            "Normal" => 1,
+            "DroughtAlert" => 2,
+            "PestRisk" => 3,
+            "FloodRisk" => 4,
+            "FrostWarning" => 5,
+        };
+
+        FieldStatusCurrent
+        .WithLabels(fieldId.ToString())
+        .Set(numericStatus);
+    }
+
 }

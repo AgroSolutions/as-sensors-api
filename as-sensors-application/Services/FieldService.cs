@@ -75,6 +75,7 @@ namespace as_sensors_application.Services
             {
                 await fieldServicePublisher.UpdateFieldStatus(dto);
                 telemetry.FieldStatusUpdatePublished(_status, success: true);
+                telemetry.StatusAlert(_fieldId, _status);
             }
             catch (Exception ex)
             {
