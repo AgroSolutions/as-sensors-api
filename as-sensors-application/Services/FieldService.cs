@@ -6,11 +6,9 @@ using as_sensors_infra.Persistance.Repository.Interfaces;
 namespace as_sensors_application.Services
 {
     public class FieldService(
-        IHttpClientFactory httpClientFactory,
         IFieldServicePublisher fieldServicePublisher,
         ISensorDataRepository sensorDataRepository,
-        ISensorRepository sensorRepository,
-        ISensorTelemetry telemetry
+        ISensorRepository sensorRepository
         )
     {
 
@@ -71,17 +69,7 @@ namespace as_sensors_application.Services
                 UpdatedAt = DateTime.UtcNow,
             };
 
-            try
-            {
-                await fieldServicePublisher.UpdateFieldStatus(dto);
-                telemetry.FieldStatusUpdatePublished(_fieldId, _status, success: true);
-                telemetry.StatusAlert(_fieldId, _status);
-            }
-            catch (Exception ex)
-            {
-                telemetry.FieldStatusUpdatePublished(_fieldId, _status, success: false, failureReaon: ex.GetType().Name);
-                throw;
-            }
+            await fieldServicePublisher.UpdateFieldStatus(dto);
         }
     }
 }

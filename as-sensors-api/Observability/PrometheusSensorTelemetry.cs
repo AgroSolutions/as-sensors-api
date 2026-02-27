@@ -28,27 +28,6 @@ public class PrometheusSensorTelemetry : ISensorTelemetry
         Metrics.CreateGauge("as_sensors_precipitation_percentage", "Nível de precipitação (%)",
             new GaugeConfiguration { LabelNames = ["service", "env", "field_id", "sensor_id"] });
 
-    private static readonly Counter FieldStatusUpdatePublishTotal =
-        Metrics.CreateCounter("as_sensors_field_status_update_publish_total", "Atualizações de status de campo publicadas",
-            new CounterConfiguration { LabelNames = ["service", "env", "field_id", "status", "result", "failure_reason"] });
-
-    // Status atual do talhão
-    private static readonly Gauge FieldStatusCurrent =
-    Metrics.CreateGauge(
-        "as_sensors_field_status_current",
-        "Status atual do talhao",
-        new GaugeConfiguration
-        {
-            LabelNames = ["field_id"]
-        });
-
-    public void FieldStatusUpdatePublished(Guid fieldId, string status, bool success, string? failureReaon = null)
-    {
-        FieldStatusUpdatePublishTotal
-            .WithLabels(Service, Env, status, success ? "success" : "failure", failureReaon ?? "")
-            .Inc();
-    }
-
     public void SensorCreated(Guid fieldId)
     {
         SensorsCreatedTotal.WithLabels(Service, Env, fieldId.ToString()).Inc();
@@ -60,24 +39,6 @@ public class PrometheusSensorTelemetry : ISensorTelemetry
         TemperatureC.WithLabels(Service, Env, fieldId.ToString(), sensorId.ToString()).Set(temperatureC);
         SoilMoisturePercentage.WithLabels(Service, Env, fieldId.ToString(), sensorId.ToString()).Set(soilMoisturePercentage);
         PrecipitationPercentage.WithLabels(Service, Env, fieldId.ToString(), sensorId.ToString()).Set(preciptationPercentage);
-    }
-
-    public void StatusAlert(Guid fieldId, string status, string? failureReaon = null)
-    {
-        double numericStatus = status switch
-        {
-            "Unknown" => 0,
-            "Normal" => 1,
-            "DroughtAlert" => 2,
-            "PestRisk" => 3,
-            "FloodRisk" => 4,
-            "FrostWarning" => 5,
-            _ => 0
-        };
-
-        FieldStatusCurrent
-        .WithLabels(fieldId.ToString())
-        .Set(numericStatus);
     }
 
 }
