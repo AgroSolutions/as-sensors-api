@@ -17,7 +17,7 @@ public class PrometheusSensorTelemetry : ISensorTelemetry
             new CounterConfiguration { LabelNames = ["service", "env", "field_id", "sensor_id"] });
 
     private static readonly Gauge TemperatureC =
-        Metrics.CreateGauge("as_sensors_temeprature_c", "Temperatura atual em (C)",
+        Metrics.CreateGauge("as_sensors_temperature_c", "Temperatura atual em (C)",
             new GaugeConfiguration { LabelNames = ["service", "env", "field_id", "sensor_id"] });
 
     private static readonly Gauge SoilMoisturePercentage =
