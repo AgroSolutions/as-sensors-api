@@ -6,20 +6,12 @@ using as_sensors_infra.Persistance.Repository.Interfaces;
 
 namespace as_sensors_application.Services;
 
-public class SensorDataService : ISensorDataService
+public class SensorDataService(ISensorDataRepository repository, ISensorRepository sensorRepository,  FieldService fieldService, ISensorTelemetry telemetry) : ISensorDataService
 {
-    private readonly ISensorDataRepository _repository;
-    private readonly FieldService _fieldService;
-    private readonly ISensorTelemetry _telemetry;
-
-    public SensorDataService(ISensorDataRepository repository, FieldService fieldService, ISensorTelemetry telemetry)
-    {
-        _repository = repository;
-        _fieldService = fieldService;
-        _telemetry = telemetry;
-    }
     public async Task<SensorDataDTOResponse> AddSensorDataAsync(SensorDataDTO dto, CancellationToken ct = default)
     {
+        Guid fieldId = await sensorRepository.GetFieldIdBySensorIdAsync(dto.SensorId, ct);
+
         var entity = new SensorData
         {
             SensorId = dto.SensorId,
@@ -29,11 +21,11 @@ public class SensorDataService : ISensorDataService
             PrecipitationLevelPercentage = dto.PrecipitationLevelPercentage,
         };
 
-        var created = await _repository.InsertAsync(entity, ct);
+        var created = await repository.InsertAsync(entity, ct);
 
-        _telemetry.SensorReadingStored(created.SensorId, created.TemperatureC, created.SoilMoisturePercentage, created.PrecipitationLevelPercentage);
+        telemetry.SensorReadingStored(fieldId, created.SensorId, created.TemperatureC, created.SoilMoisturePercentage, created.PrecipitationLevelPercentage);
 
-       await _fieldService.CalculateFieldStatus(
+       await fieldService.CalculateFieldStatus(
           sensorId: created.SensorId,
           newReading: new SensorDataDTO
           {
@@ -59,7 +51,7 @@ public class SensorDataService : ISensorDataService
 
     public async Task<List<SensorDataDTOResponse>> GetSensorDataBySensorIdAsync(Guid sensorId, CancellationToken ct = default)
     {
-        var items = await _repository.GetBySensorIdAsync(sensorId, ct);
+        var items = await repository.GetBySensorIdAsync(sensorId, ct);
 
         return items.Select(x => new SensorDataDTOResponse
         {
