@@ -6,6 +6,39 @@ AgroSolutions (AS) é uma cooperativa inovadora de gestão de colheitas e agricu
 
 [Documentação](https://www.notion.so/Agro-Solutions-2eba50ade7548089b001fb1756081926)
 
+## Observabilidade
+
+Você poderá encontrar arquivos de observabilidade usados pelo Prometheus e pelo Grafana nas pastas:
+
+- as-sensors-api/as-sensors-api/Observability/
+- as-sensors-api/as-sensors-application/Observability/
+
+## Cálculo de Status do Talhão:
+
+<b>Regra:</b> 
+Faz uma média dos valores das ultimas 24 horas + valor novo, e gera o status do talhão.
+
+<b>Valores para cada Status:</b>
+
+<b>Normal: </b>
+(SoilMoisturePercentage <= 15)
+E (TemperatureC <= 25 )
+E (PrecipitationLevelPercentage <= 75)
+
+<b>Drought alert: </b>
+SoilMoisturePercentage < 15
+E (PrecipitationLevelPercentage <= 75)
+
+<b>Pest Risk: </b>
+(TemperatureC > 25)
+E (PrecipitationLevelPercentage > 75)
+
+<hr>
+
+Você poderá encontrar os cálculos no arquivo:
+
+- as-sensors-api/as-sensors-application/Services/FieldService.cs
+
 ## ⚙️ Tecnologias e Plataformas utilizadas
 
 - [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0)
