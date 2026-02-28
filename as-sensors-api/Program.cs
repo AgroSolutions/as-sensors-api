@@ -36,6 +36,8 @@ builder.Services.AddSwaggerConfiguration();
 #region DI
 builder.Services.AddHttpClient();
 
+builder.Services.Configure<MongoDBSettings>(
+    builder.Configuration.GetSection("MongoDBSettings"));
 builder.Services.AddSingleton<MongoContext>();
 builder.Services.AddScoped<FieldService>();
 builder.Services.AddScoped<IFieldServicePublisher, FieldServicePublisher>();

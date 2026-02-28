@@ -10,8 +10,10 @@ namespace as_sensors_infra.Persistance.Config
 
         public MongoContext(IOptions<MongoDBSettings> settings)
         {
-            var client = new MongoClient("mongodb+srv://fiap:admin123@cluster0.lzxq3kz.mongodb.net/?appName=Cluster0");
-            Database = client.GetDatabase("sensor");
+            var mongoSettings = settings.Value;
+
+            var client = new MongoClient(mongoSettings.ConnectionString);
+            Database = client.GetDatabase(mongoSettings.DatabaseName);
         }
     }
 }
